@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>Book Details</title>
+        <style>
+            .card-img-top {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                /*width: 50%;*/
+                max-width: 1080px;
+                max-height: 650px;
+            }
+        </style>
+    </head>
+    <body>
+        {% extends 'crud_operation/main.html' %}
+        {% block content %}
+        <center>
+            <div class="card mb-3">
+                <img class="card-img-top" src="{{book.imageURL}}" alt="Card image cap">
+                <div class="card-body">
+                <h5 class="card-title">{{book.book_name}}</h5>
+                <p class="card-text">Description about the book is displayed here, Updating Soon!!!</p>
+                <p class="card-text"><small class="text-muted">Published On {{book.published_on.date}}</small></p>
+                <a href="{% url 'book_download' book.id %}" class="btn btn-primary">Download</a>
+                </div>
+            </div>
+        </center>
+        {% endblock %}
+    </body>
+</html>

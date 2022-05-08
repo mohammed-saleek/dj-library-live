@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>
+            User Registration
+        </title>
+    </head>
+    <body>
+        {% extends 'crud_operation/main.html' %}
+        {% block content %}
+        {% load crispy_forms_tags %}  
+        <center><h3 class="display-4">Join us in this wonderful journey</h3></center>
+        <p><em>Please Fill in the form</em></p>
+        <div class="container py-5">
+            <!-- Create a Form -->
+            <form action="{% url 'register' %}" method="POST">
+                <!-- Security token by Django -->
+                {% csrf_token %}
+                {{ register_form|crispy }} 
+                <button class="btn btn-primary" type="submit" value="Register">Register</button>
+            </form>
+            <p class="text-center">If you already have an account, <a href="{% url 'login' %}">Login</a> instead.</p>
+        </div>
+        <!-- Alert Popup message -->
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

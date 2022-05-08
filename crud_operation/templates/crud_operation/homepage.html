@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>
+            Homepage
+        </title>
+    </head>
+    <body>
+        {% extends 'crud_operation/main.html' %}
+        {% block content %}
+        <center><h3 class="display-4">Where Dreams Come True</h3></center>
+        <p><em>Books Available In The Store</em></p>
+        <div class="container">
+        <div class="row">
+            <!-- Refer to bootstrap card deck for future references -->
+            <!-- https://getbootstrap.com/docs/4.0/components/card/#card-decks -->
+            {% for book in books %}
+            <div class="card" style="width: 17rem;">
+                <a href = "{% url 'book_details' book.id %}">
+                <img class="card-img-top" src="{{book.imageURL}}" alt="Card image cap" height="230" width="200"></a>
+                <div class="card-body">
+                    <h5 class="card-title">{{book.book_name}}</h5>
+                    <p class="card-text">Written By, {{book.author_name}}</p>
+                    <a href="{% url 'book_details' book.id %}" class="btn btn-dark">View</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'book_update' book.id %}" class="btn btn-primary">Update</a>
+                    <a href="{% url 'book_delete' book.id %}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                </div>
+                <!-- Giving hyperlink to bootstrap card -->
+                
+            </div>
+            {% endfor %}
+            {% if books.count == 0 %}
+                <center>
+                    <h2><em>Book Unavailable</em></h2>
+                </center>
+            {% endif %}
+        </div>
+        <!-- Alert Popup message -->
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endblock %}
+    </body>
+</html>

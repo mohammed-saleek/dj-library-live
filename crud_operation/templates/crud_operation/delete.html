@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>
+            Delete
+        </title>
+    </head>
+    <body>
+        {% extends 'crud_operation/main.html' %}
+        {% block content %}
+        <center><h3 class="display-4">Please come back later...</h3></center>
+        <p><em>Unavailable?</em></p>
+        <div class="main">
+            <!-- Create a Form -->
+            <form method="POST">
+                <!-- Security token by Django -->
+                {% csrf_token %}
+                Are you want to delete this item ?
+                <a href = "{% url 'homepage' %}">Cancel</a>
+                <input type="submit" name="confirm" value = "Confirm">
+            </form>
+        </div>
+        {% endblock %}
+    </body>
+</html>

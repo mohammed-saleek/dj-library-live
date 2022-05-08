@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>
+            Contact Us
+        </title>
+    </head>
+    <body>
+        {% extends 'crud_operation/main.html' %}
+        {% block content %}
+          <tbody>
+           <tr class="table_row">
+            <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+              {% for field in form %}
+                <td>
+                 <table>
+                  <tr><td>{{ field.label }}</td></tr>
+                  <tr><td>{{ field }}</td></tr>
+                 </table>
+                </td>
+              {% endfor %}
+              <input type="submit" value="Submit">
+             </form>
+            </tr>
+           </tbody>
+        {% endblock %}
+    </body>
+</html>
