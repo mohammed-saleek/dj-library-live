@@ -123,7 +123,7 @@ def contact_us(request):
             phone_no = form.cleaned_data.get('phone_no')
             description = form.cleaned_data.get('description')
             subject = 'Regarding Contact information'
-            send_mail(subject,description,'mohammedsaleek123@gmail.com',[email],fail_silently=False)
+            send_mail(subject,description,'mohammedsaleek123@gmail.com',[email],fail_silently=False) #Email
             form.save()
             return redirect('/')
         else:
