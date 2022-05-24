@@ -6,9 +6,11 @@ from .forms import NewUserForm
 from django.contrib.auth import login,authenticate,logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from .decorators import unauthorized_user #created for authorization
 # Create your views here.
 
 #User Registration
+@unauthorized_user
 def user_register(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
@@ -23,6 +25,7 @@ def user_register(request):
     return render(request,'user_management/registration.html',context)
 
 #User Login function
+@unauthorized_user
 def user_login(request):
     if request.method == "POST":
         form = AuthenticationForm(request, request.POST)

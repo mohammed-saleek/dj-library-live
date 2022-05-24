@@ -13,6 +13,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
 
+
 # Create your views here.
 def homepage(request):
     #@desc The first few lines of code is to search an element from the database.
@@ -31,48 +32,57 @@ def homepage(request):
 
 
 def book_register(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES)
-        context = {'form': form}
-        if form.is_valid():
-            form.save()
-            messages.info(request, "Book has been successfully uploaded.")
-            return redirect('/')
-        else :
-            return render(request, 'crud_operation/book_form.html', context) 
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = BookForm(request.POST, request.FILES)
+            context = {'form': form}
+            if form.is_valid():
+                form.save()
+                messages.info(request, "Book has been successfully uploaded.")
+                return redirect('/')
+            else :
+                return render(request, 'crud_operation/book_form.html', context) 
+        else:
+            form = BookForm()
+            context = {'form':form}
+            return render(request,'crud_operation/book_form.html',context)
     else:
-        form = BookForm()
-        context = {'form':form}
-        return render(request,'crud_operation/book_form.html',context)
+        return redirect('homepage')
 
 
 def book_delete(request, pk):
-    try:
-        book = Book.objects.get(id=pk)
-    except Book.DoesNotExist:
-        return redirect('/')
-    if request.method == 'POST':
-        book.delete()
-        messages.info(request, "Book has been removed.")
-        return redirect('/')
-    return render(request, 'crud_operation/delete.html')
+    if request.user.is_authenticated:
+        try:
+            book = Book.objects.get(id=pk)
+        except Book.DoesNotExist:
+            return redirect('/')
+        if request.method == 'POST':
+            book.delete()
+            messages.info(request, "Book has been removed.")
+            return redirect('/')
+        return render(request, 'crud_operation/delete.html')
+    else:
+        return redirect('homepage')
 
 
 def book_update(request,pk):
-    try:
-        book = Book.objects.get(id=pk)
-    except Book.DoesNotExist:
-        return redirect('/')
-    form = BookForm(instance=book)
-    if request.method == 'POST':
-        form = BookForm(request.POST or None, request.FILES, instance=book)
-        if form.is_valid():
-            form.save()
-            messages.info(request, "Book has been successfully updated")
+    if request.user.is_authenticated:
+        try:
+            book = Book.objects.get(id=pk)
+        except Book.DoesNotExist:
             return redirect('/')
+        form = BookForm(instance=book)
+        if request.method == 'POST':
+            form = BookForm(request.POST or None, request.FILES, instance=book)
+            if form.is_valid():
+                form.save()
+                messages.info(request, "Book has been successfully updated")
+                return redirect('/')
+        else:
+            context = {'form':form}
+            return render(request, 'crud_operation/book_form.html',context)
     else:
-        context = {'form':form}
-        return render(request, 'crud_operation/book_form.html',context)
+        return redirect('homepage')
 
 
 def book_details(request,pk):
